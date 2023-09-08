@@ -23,9 +23,9 @@ void test_rotate_x(){
         set_vector(&triangle.v2, -1.0f, -1.0f, 0.0f);
         set_vector(&triangle.v3, 1.0f, -1.0f, 0.0f);
 
-        rotate_around_x(angle, &triangle.v1.y, &triangle.v1.z);
-        rotate_around_x(angle, &triangle.v2.y, &triangle.v2.z);
-        rotate_around_x(angle, &triangle.v3.y, &triangle.v3.z);
+        rotate_point_around_x(angle, &triangle.v1.y, &triangle.v1.z);
+        rotate_point_around_x(angle, &triangle.v2.y, &triangle.v2.z);
+        rotate_point_around_x(angle, &triangle.v3.y, &triangle.v3.z);
 
         /*
         <Vector (0.0000, 0.0000, 1.0000)>
@@ -66,9 +66,9 @@ void test_rotate_y(){
         set_vector(&triangle.v2, -1.0f, -1.0f, 0.0f);
         set_vector(&triangle.v3, 1.0f, -1.0f, 0.0f);
 
-        rotate_around_y(angle, &triangle.v1.x, &triangle.v1.z);
-        rotate_around_y(angle, &triangle.v2.x, &triangle.v2.z);
-        rotate_around_y(angle, &triangle.v3.x, &triangle.v3.z);
+        rotate_point_around_y(angle, &triangle.v1.x, &triangle.v1.z);
+        rotate_point_around_y(angle, &triangle.v2.x, &triangle.v2.z);
+        rotate_point_around_y(angle, &triangle.v3.x, &triangle.v3.z);
 
         /*
         <Vector (0.0000, 1.0000, 0.0000)>
@@ -107,9 +107,9 @@ void test_rotate_z(){
         set_vector(&triangle.v2, -1.0f, -1.0f, 0.0f);
         set_vector(&triangle.v3, 1.0f, -1.0f, 0.0f);
 
-        rotate_around_z(angle, &triangle.v1.x, &triangle.v1.y);
-        rotate_around_z(angle, &triangle.v2.x, &triangle.v2.y);
-        rotate_around_z(angle, &triangle.v3.x, &triangle.v3.y);
+        rotate_point_around_z(angle, &triangle.v1.x, &triangle.v1.y);
+        rotate_point_around_z(angle, &triangle.v2.x, &triangle.v2.y);
+        rotate_point_around_z(angle, &triangle.v3.x, &triangle.v3.y);
 
         /*
             <Vector (-1.0000, 0.0000, 0.0000)>
@@ -138,9 +138,9 @@ void test_rotate_z(){
         set_vector(&triangle.v2, -1.0f, -1.0f, 0.0f);
         set_vector(&triangle.v3, 1.0f, -1.0f, 0.0f);
 
-        rotate_around_z(angle, &triangle.v1.x, &triangle.v1.y);
-        rotate_around_z(angle, &triangle.v2.x, &triangle.v2.y);
-        rotate_around_z(angle, &triangle.v3.x, &triangle.v3.y);
+        rotate_point_around_z(angle, &triangle.v1.x, &triangle.v1.y);
+        rotate_point_around_z(angle, &triangle.v2.x, &triangle.v2.y);
+        rotate_point_around_z(angle, &triangle.v3.x, &triangle.v3.y);
 
         /*
             <Vector (-0.6820, 0.7314, 0.0000)>
@@ -169,9 +169,9 @@ void test_rotate_z(){
         set_vector(&triangle.v2, -1.0f, -1.0f, 0.0f);
         set_vector(&triangle.v3, 1.0f, -1.0f, 0.0f);
 
-        rotate_around_z(angle, &triangle.v1.x, &triangle.v1.y);
-        rotate_around_z(angle, &triangle.v2.x, &triangle.v2.y);
-        rotate_around_z(angle, &triangle.v3.x, &triangle.v3.y);
+        rotate_point_around_z(angle, &triangle.v1.x, &triangle.v1.y);
+        rotate_point_around_z(angle, &triangle.v2.x, &triangle.v2.y);
+        rotate_point_around_z(angle, &triangle.v3.x, &triangle.v3.y);
 
         /*
             <Vector (0.0000, 1.0000, 0.0000)>

@@ -1,58 +1,76 @@
-# TriangleRotation Library
 
-The TriangleRotation library provides functions to perform rotations on triangles and vectors in a three-dimensional space. The library is implemented in C and includes functionalities to rotate points around the X, Y, and Z axes.
+# 3D Geometry Rotation Library
 
-## Table of Contents
+## Overview
 
-- [Introduction](#introduction)
-- [Usage](#usage)
-- [Example](#example)
-- [Testing](#testing)
+This C library provides a set of functions to perform 3D rotations on points and triangles. It includes rotation around individual axes (X, Y, Z) and also allows for rotation based on a given direction vector. The library is designed to be easy to integrate and use in larger projects requiring 3D geometry manipulation.
 
-## Introduction
+## Features
 
-The TriangleRotation library allows you to manipulate triangles and vectors by performing rotations around the X, Y, and Z axes. This can be useful in various applications such as computer graphics, simulations, and geometry processing.
+- Rotate points around X, Y, and Z axes.
+- Rotate vectors around X, Y, and Z axes.
+- Rotate triangles around X, Y, and Z axes.
+- Rotate points and triangles by a given direction vector.
+- Calculate triangle points based on side length.
+- Retrieve the heights of the vertices of a triangle.
 
-## Usage
+## How to Use
 
-1. Include the necessary header files in your C code:
+### Include the Header
+
+Include the header file `rotate.h` in your project.
 
 ```c
 #include "rotate.h"
 ```
 
-2. Use the provided functions to perform rotations on vectors and triangles.
+### Basic Usage
 
-### Structures
-
-- `struct Vector`: Represents a 3D vector with `x`, `y`, and `z` components.
-- `struct Triangle`: Represents a triangle composed of three vectors.
-
-### Functions
-
-- `void set_vector(struct Vector *v, float x, float y, float z)`: Sets the components of a vector.
-- `void rotate_around_x(float angle, float *y, float *z)`: Rotates a point around the X-axis.
-- `void rotate_around_y(float angle, float *x, float *z)`: Rotates a point around the Y-axis.
-- `void rotate_around_z(float angle, float *x, float *y)`: Rotates a point around the Z-axis.
-
-## Example
+#### Rotate Point Around X-Axis
 
 ```c
-#include "rotate.h"
-#include <stdio.h>
-
-int main() {
-    struct Vector v = {1.0f, 0.0f, 0.0f};
-  
-    rotate_around_y(90.0f, &v.x, &v.z);
-  
-    printf("Rotated vector: (%f, %f, %f)\n", v.x, v.y, v.z);
-  
-    return 0;
-}
+float y = 1.0, z = 0.0;
+rotate_point_around_x(90.0, &y, &z);
 ```
 
-## Testing
+#### Rotate Vector Around Y-Axis
 
-The library includes a testing suite to ensure the correctness of the rotation functions. The testing code is provided in the `test.h` file and can be executed by including the necessary header files and calling the testing functions.
+```c
+struct Vector v;
+set_vector(&v, 1.0, 0.0, 0.0);
+rotate_vector_around_y(90.0, &v);
+```
 
+#### Rotate Triangle Around Z-Axis
+
+```c
+struct Triangle t;
+// Initialize t with vertices
+rotate_triangle_around_z(45.0, &t);
+```
+
+#### Rotate Point by Direction Vector
+
+```c
+float x = 1.0, y = 0.0, z = 0.0;
+rotate_by_direction(90.0, 45.0, &x, &y, &z);
+```
+
+### Advanced Usage
+
+#### Calculate Triangle Points by Side Length
+
+```c
+struct Triangle t = calculate_triangle_points_by_side(10);
+```
+
+#### Get Heights of Triangle Vertices
+
+```c
+float h1, h2, h3;
+get_heights(&t, &h1, &h2, &h3);
+```
+
+## Dependencies
+
+- Math library for trigonometric functions (`<math.h>`)
