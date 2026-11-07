@@ -1,33 +1,24 @@
-#pragma once
-#include <math.h>
+#ifndef TRIANGLE_ROTATION_ROTATE_H
+#define TRIANGLE_ROTATION_ROTATE_H
+
 #include <stdint.h>
 
-#define M_PI 3.14159265358979323846
-#define SIN_30 0.5
-#define COS_30 0.866
-#define R_CONST 0.57735
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define X 0
-#define Y 1
-#define Z 2
-
-#define V1 0
-#define V2 1
-#define V3 2
-
-struct Vector{
+struct Vector {
     float x;
     float y;
     float z;
 };
 
-// Вектора строятся относительно центра координат
-struct Triangle{
+// The vertices are taken from the origin of the coordinates.
+struct Triangle {
     struct Vector v1;
     struct Vector v2;
     struct Vector v3;
 };
-
 
 void set_vector(struct Vector *v, float x, float y, float z);
 
@@ -50,3 +41,8 @@ struct Triangle calculate_triangle_points_by_side(uint8_t side);
 
 void get_heights(struct Triangle *t, float *h1, float *h2, float *h3);
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // TRIANGLE_ROTATION_ROTATE_H
