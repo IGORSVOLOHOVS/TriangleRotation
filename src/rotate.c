@@ -1,86 +1,72 @@
 #include "rotate.h"
 
+#include <math.h>
 
-const float c_radians = M_PI / 180.0f;
+// Degrees to radians, and the 30 degree angles of an equilateral triangle.
+static const float c_radians = 3.14159265358979323846f / 180.0f;
+static const float c_sin_30 = 0.5f;
+static const float c_cos_30 = 0.866f;
+// The circumradius of an equilateral triangle is its side times this.
+static const float c_radius_per_side = 0.57735f;
 
-// для расчетов
-float radius = 0.0f; // Радиус вписанной окружности
-float radians = 0.0f; // Угол в радианах
-float cosTheta = 0.0f; // cos(theta)
-float sinTheta = 0.0f; // sin(theta)
-
-float new_x = 0.0f;
-float new_y = 0.0f;
-float new_z = 0.0f;
-
-// поворот точки вокруг оси X
+// rotation of a point around the X axis
 void rotate_point_around_x(float angle, float *y, float *z) {
-    radians = c_radians* angle;
-    
-    cosTheta = cos(radians);
-    sinTheta = sin(radians);
-    
-    new_y = *y * cosTheta - *z * sinTheta;
-    new_z = *y * sinTheta + *z * cosTheta;
+    const float radians = c_radians * angle;
+    const float cosTheta = cosf(radians);
+    const float sinTheta = sinf(radians);
+
+    const float new_y = *y * cosTheta - *z * sinTheta;
+    const float new_z = *y * sinTheta + *z * cosTheta;
 
     *y = new_y;
     *z = new_z;
 }
-// поворот точки вокруг оси Y
+// rotation of a point around the Y axis
 void rotate_point_around_y(float angle, float *x, float *z) {
-    radians = c_radians * angle;
-    
-    cosTheta = cos(radians);
-    sinTheta = sin(radians);
-    
-    new_x = *x * cosTheta + *z * sinTheta;
-    new_z = -*x * sinTheta + *z * cosTheta;
+    const float radians = c_radians * angle;
+    const float cosTheta = cosf(radians);
+    const float sinTheta = sinf(radians);
+
+    const float new_x = *x * cosTheta + *z * sinTheta;
+    const float new_z = -*x * sinTheta + *z * cosTheta;
 
     *x = new_x;
     *z = new_z;
 }
-// поворот точки вокруг оси Z
+// rotation of a point around the Z axis
 void rotate_point_around_z(float angle, float *x, float *y) {
-    radians = c_radians * angle;
-    
-    cosTheta = cos(radians);
-    sinTheta = sin(radians);
-    
-    new_x = *x * cosTheta - *y * sinTheta;
-    new_y = *x * sinTheta + *y * cosTheta;
+    const float radians = c_radians * angle;
+    const float cosTheta = cosf(radians);
+    const float sinTheta = sinf(radians);
+
+    const float new_x = *x * cosTheta - *y * sinTheta;
+    const float new_y = *x * sinTheta + *y * cosTheta;
 
     *x = new_x;
     *y = new_y;
 }
 
-// поворот точки на определенный вектор
+// rotation of a point towards a direction
 void rotate_by_diraction(float angle_a, float angle_b, float *x, float *y, float *z) {
-    // поворот вокруг оси Z на угол -angle_a (меняем ось координат на x' и y')
+    // around Z by -angle_a: the axes turn to x' and y'
     rotate_point_around_z(-angle_a, x, y);
 
-    // поворот вокруг оси Y на угол angle_b(опускаем либо поднимаем точку )
+    // around Y by angle_b: the point is lowered or raised
     rotate_point_around_y(angle_b, x, z);
 
-    // поворот вокруг оси Z на угол angle_a (возвращаем ось координат на x и y)
+    // around Z by angle_a: the axes turn back to x and y
     rotate_point_around_z(angle_a, x, y);
 }
 
-// установка вектора
 void set_vector(struct Vector *v, float x, float y, float z) {
     v->x = x;
     v->y = y;
     v->z = z;
 }
 
-void rotate_vector_around_x(float angle, struct Vector *v) {
-    rotate_point_around_x(angle, &v->y, &v->z);
-}
-void rotate_vector_around_y(float angle, struct Vector *v) {
-    rotate_point_around_y(angle, &v->x, &v->z);
-}
-void rotate_vector_around_z(float angle, struct Vector *v) {
-    rotate_point_around_z(angle, &v->x, &v->y);
-}
+void rotate_vector_around_x(float angle, struct Vector *v) { rotate_point_around_x(angle, &v->y, &v->z); }
+void rotate_vector_around_y(float angle, struct Vector *v) { rotate_point_around_y(angle, &v->x, &v->z); }
+void rotate_vector_around_z(float angle, struct Vector *v) { rotate_point_around_z(angle, &v->x, &v->y); }
 
 void rotate_triabgle_around_x(float angle, struct Triangle *t) {
     rotate_vector_around_x(angle, &t->v1);
@@ -98,42 +84,24 @@ void rotate_triabgle_around_z(float angle, struct Triangle *t) {
     rotate_vector_around_z(angle, &t->v3);
 }
 
-void rotate_triangle_by_direction(float angle_a, float angle_b, struct Triangle *t){
+void rotate_triangle_by_direction(float angle_a, float angle_b, struct Triangle *t) {
     rotate_by_diraction(angle_a, angle_b, &t->v1.x, &t->v1.y, &t->v1.z);
     rotate_by_diraction(angle_a, angle_b, &t->v2.x, &t->v2.y, &t->v2.z);
     rotate_by_diraction(angle_a, angle_b, &t->v3.x, &t->v3.y, &t->v3.z);
 }
 
-struct Triangle calculate_triangle_points_by_side(uint8_t side){
-    radius = side * R_CONST;
+struct Triangle calculate_triangle_points_by_side(uint8_t side) {
+    const float radius = (float)side * c_radius_per_side;
 
     struct Triangle t;
-
-    // обнуляем вспомогательные координаты
-    new_x = 0.0f;
-    new_y = 0.0f;
-    new_z = 0.0f;
-
-    // вычисления для первой точки
-    new_x = radius;
-
-    set_vector(&t.v1, new_x, new_y, new_z);
-
-    // вычисления для второй точки
-    new_x = -radius * SIN_30;
-    new_y = radius * COS_30;
-
-    set_vector(&t.v2, new_x, new_y, new_z);
-
-    // вычисления для третьей точки
-    new_y = -radius * COS_30;
-
-    set_vector(&t.v3, new_x, new_y, new_z);
-
+    // the first vertex on the X axis, the other two 120 degrees either side of it, all at z = 0
+    set_vector(&t.v1, radius, 0.0f, 0.0f);
+    set_vector(&t.v2, -radius * c_sin_30, radius * c_cos_30, 0.0f);
+    set_vector(&t.v3, -radius * c_sin_30, -radius * c_cos_30, 0.0f);
     return t;
 }
 
-void get_heights(struct Triangle *t, float *h1, float *h2, float *h3){
+void get_heights(struct Triangle *t, float *h1, float *h2, float *h3) {
     *h1 = t->v1.z;
     *h2 = t->v2.z;
     *h3 = t->v3.z;
