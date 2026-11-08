@@ -1,9 +1,7 @@
 #include "rotate.h"
-#include "test.h"
 #include <stdio.h>
 
-int main()
-{
+int main(void) {
     struct Triangle t = calculate_triangle_points_by_side(3);
 
     printf("Before rotation:\n");

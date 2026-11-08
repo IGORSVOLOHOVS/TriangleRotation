@@ -1,0 +1,11 @@
+Checks: >-
+  -*,
+  clang-diagnostic-*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  portability-*,
+  -bugprone-easily-swappable-parameters
+WarningsAsErrors: '*'
+HeaderFilterRegex: '.*[/\]include[/\].*'
+ExtraArgs: ['--target=x86_64-w64-mingw32']

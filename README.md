@@ -1,76 +1,32 @@
+# triangle-rotation
 
-# 3D Geometry Rotation Library
+A small C library that turns points, vectors and triangles in 3D: around the X, Y and Z axes, and towards a direction given by a heading and a tilt. It also places an equilateral triangle around the origin from its side, and answers the heights of its vertices.
 
-## Overview
+## What it does
 
-This C library provides a set of functions to perform 3D rotations on points and triangles. It includes rotation around individual axes (X, Y, Z) and also allows for rotation based on a given direction vector. The library is designed to be easy to integrate and use in larger projects requiring 3D geometry manipulation.
+- **Points, vectors and triangles around an axis**: `rotate_point_around_x`, `_y` and `_z` turn two coordinates by an angle in degrees; `rotate_vector_around_*` and `rotate_triabgle_around_*` turn a `struct Vector` or each vertex of a `struct Triangle`.
+- **Towards a direction**: `rotate_by_diraction` turns a point by `-angle_a` around Z, tilts it by `angle_b` around Y, and turns it back by `angle_a`; `rotate_triangle_by_direction` does that to every vertex.
+- **An equilateral triangle**: `calculate_triangle_points_by_side` places one of side 0 to 255 around the origin at z = 0, and `get_heights` answers the z of its three vertices.
 
-## Features
+The names keep their original spelling, `triabgle` and `diraction` among them, because `python/rotate.py` binds them by name.
 
-- Rotate points around X, Y, and Z axes.
-- Rotate vectors around X, Y, and Z axes.
-- Rotate triangles around X, Y, and Z axes.
-- Rotate points and triangles by a given direction vector.
-- Calculate triangle points based on side length.
-- Retrieve the heights of the vertices of a triangle.
+## Layout
 
-## How to Use
-
-### Include the Header
-
-Include the header file `rotate.h` in your project.
-
-```c
-#include "rotate.h"
+```text
+include/rotate.h   the C API
+src/rotate.c       the rotations
+src/main.c         a demo: one triangle of side 3, turned towards heading 90 and tilted 90
+tests/             GoogleTest cases for the library
+python/            a ctypes wrapper over python/rotate.dll, and a Blender script that draws the triangle
+Makefile           the original route: builds the shared library with gcc
 ```
 
-### Basic Usage
+## Build and test
 
-#### Rotate Point Around X-Axis
+`.\recipe.ps1 test` builds the library, the demo and the tests with CMake and Ninja, runs `ctest`, `clang-tidy` and `clang-format`, and searches `include` and `src` for locks and for `throw`, `try` and `catch`. It needs mingw gcc and g++, cmake, ninja and LLVM. `.\recipe.ps1 run` prints the demo. `docs/install.md` has the details, and `docs/manual.md` covers the functions.
 
-```c
-float y = 1.0, z = 0.0;
-rotate_point_around_x(90.0, &y, &z);
-```
+MIT licensed: see `LICENSE`.
 
-#### Rotate Vector Around Y-Axis
+## Lab requirements
 
-```c
-struct Vector v;
-set_vector(&v, 1.0, 0.0, 0.0);
-rotate_vector_around_y(90.0, &v);
-```
-
-#### Rotate Triangle Around Z-Axis
-
-```c
-struct Triangle t;
-// Initialize t with vertices
-rotate_triangle_around_z(45.0, &t);
-```
-
-#### Rotate Point by Direction Vector
-
-```c
-float x = 1.0, y = 0.0, z = 0.0;
-rotate_by_direction(90.0, 45.0, &x, &y, &z);
-```
-
-### Advanced Usage
-
-#### Calculate Triangle Points by Side Length
-
-```c
-struct Triangle t = calculate_triangle_points_by_side(10);
-```
-
-#### Get Heights of Triangle Vertices
-
-```c
-float h1, h2, h3;
-get_heights(&t, &h1, &h2, &h3);
-```
-
-## Dependencies
-
-- Math library for trigonometric functions (`<math.h>`)
+This repository complies with [revision 4.0.0](http://127.0.0.1:3000/igors-lab/software-requirements/src/tag/v4.0.0/BEST_REQUIREMENTS.md) of the lab requirements, except R-02 (#8), R-09 (#9), R-12 (#10), R-13 (#11), R-13 (#12), R-14 (#13), R-37 (#14), R-41 (#15), R-42 (#16).
